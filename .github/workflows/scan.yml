@@ -10,6 +10,10 @@ on:
         description: 'Version to scan (default: latest)'
         required: false
         default: ''
+      scanner:
+        description: 'Scanner dist-tag (latest or beta; the n8n Creator Portal uses beta)'
+        required: false
+        default: 'beta'
 
 permissions:
   contents: read
@@ -23,6 +27,10 @@ jobs:
           node-version: 'lts/*'
 
       - name: Scan
-        run: npx -y @n8n/scan-community-package "n8n-nodes-flowcore${VERSION:+@$VERSION}"
+        # The scanner exits with 0 even when checks fail, so fail on its report instead.
+        run: |
+          npx -y "@n8n/scan-community-package@${SCANNER:-beta}" "n8n-nodes-flowcore${VERSION:+@$VERSION}" 2>&1 | tee scan.log
+          ! grep -q 'has failed security checks' scan.log
         env:
           VERSION: ${{ inputs.version }}
+          SCANNER: ${{ inputs.scanner }}
