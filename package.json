@@ -1,0 +1,69 @@
+{
+	"name": "n8n-nodes-flowcore",
+	"version": "0.1.0",
+	"description": "n8n community node for FlowCore, the travel ERP platform: read records and run FlowCore record actions.",
+	"license": "MIT",
+	"homepage": "https://github.com/milzer-tech/n8n-nodes-flowcore#readme",
+	"keywords": [
+		"n8n-community-node-package",
+		"n8n",
+		"flowcore",
+		"travel",
+		"erp"
+	],
+	"author": {
+		"name": "milzer GmbH",
+		"url": "https://milzer.de"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/milzer-tech/n8n-nodes-flowcore.git"
+	},
+	"bugs": {
+		"url": "https://github.com/milzer-tech/n8n-nodes-flowcore/issues"
+	},
+	"engines": {
+		"node": ">=22.12"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"typecheck": "tsc --noEmit -p tsconfig.test.json",
+		"test": "vitest run",
+		"test:live": "vitest run --config vitest.live.config.mts",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist",
+		"!dist/tsconfig.tsbuildinfo"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/FlowCoreApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/FlowCore/FlowCore.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "0.50.4",
+		"@types/node": "^22.20.5",
+		"eslint": "9.32.0",
+		"n8n-workflow": "2.41.2",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2",
+		"vitest": "5.0.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

@@ -1,0 +1,8 @@
+dist
+node_modules
+*.tgz
+coverage
+.env
+.env.*
+*.log
+.n8n

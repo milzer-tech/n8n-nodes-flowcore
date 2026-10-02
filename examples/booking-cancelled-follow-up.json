@@ -1,0 +1,74 @@
+{
+	"name": "FlowCore: follow-up for cancelled bookings",
+	"nodes": [
+		{
+			"parameters": {
+				"httpMethod": "POST",
+				"path": "replace-with-a-long-random-path",
+				"options": {}
+			},
+			"id": "8f0c4b1e-1d0a-4a43-9a51-0d3c6a1f2b01",
+			"name": "FlowCore booking cancelled",
+			"type": "n8n-nodes-base.webhook",
+			"typeVersion": 2,
+			"position": [0, 0],
+			"webhookId": "8f0c4b1e-1d0a-4a43-9a51-0d3c6a1f2b02",
+			"notes": "In FlowCore, send only the system event BOOKING_CHANGED_STATUS_TO_CANCELED to this webhook's production URL."
+		},
+		{
+			"parameters": {
+				"resource": "booking",
+				"operation": "get",
+				"recordId": "={{ $json.body.payload[0].id }}"
+			},
+			"id": "8f0c4b1e-1d0a-4a43-9a51-0d3c6a1f2b03",
+			"name": "Get booking",
+			"type": "n8n-nodes-flowcore.flowCore",
+			"typeVersion": 1,
+			"position": [220, 0],
+			"credentials": {
+				"flowCoreApi": {
+					"id": "REPLACE_WITH_YOUR_CREDENTIAL",
+					"name": "FlowCore – Customer (Staging)"
+				}
+			}
+		},
+		{
+			"parameters": {
+				"resource": "followUp",
+				"operation": "create",
+				"notice": "=Check cancellation fees for booking {{ $json.id }}",
+				"additionalFields": {
+					"dueDate": "={{ $now.plus({ days: 2 }).toISO() }}",
+					"taskType": "CANCELLATION_CUSTOMER_FOLLOWUP",
+					"relatedModel": "operationsbookings",
+					"relatedRecordId": "={{ $json.id }}"
+				}
+			},
+			"id": "8f0c4b1e-1d0a-4a43-9a51-0d3c6a1f2b04",
+			"name": "Create follow-up",
+			"type": "n8n-nodes-flowcore.flowCore",
+			"typeVersion": 1,
+			"position": [440, 0],
+			"credentials": {
+				"flowCoreApi": {
+					"id": "REPLACE_WITH_YOUR_CREDENTIAL",
+					"name": "FlowCore – Customer (Staging)"
+				}
+			}
+		}
+	],
+	"connections": {
+		"FlowCore booking cancelled": {
+			"main": [[{ "node": "Get booking", "type": "main", "index": 0 }]]
+		},
+		"Get booking": {
+			"main": [[{ "node": "Create follow-up", "type": "main", "index": 0 }]]
+		}
+	},
+	"settings": {
+		"executionOrder": "v1",
+		"saveDataSuccessExecution": "none"
+	},
+	"pinData": {}
+}
