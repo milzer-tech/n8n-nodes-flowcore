@@ -8,16 +8,14 @@
  *            FLOWCORE_LIVE_RECORD_ID   = record of that resource to list actions for
  */
 import type { IDataObject, IExecuteFunctions, IHttpRequestOptions } from 'n8n-workflow';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, inject, it } from 'vitest';
 import { FlowCore } from '../../nodes/FlowCore/FlowCore.node';
 import { getBaseUrl } from '../../nodes/FlowCore/environments';
 import { supportsActions } from '../../nodes/FlowCore/resources';
 import { flowCoreRequest } from '../../nodes/FlowCore/transport';
 
-const environment = process.env.FLOWCORE_LIVE_ENVIRONMENT;
-const apiKey = process.env.FLOWCORE_LIVE_API_KEY;
-const resource = process.env.FLOWCORE_LIVE_RESOURCE || 'followUp';
-const recordId = process.env.FLOWCORE_LIVE_RECORD_ID;
+// Provided by vitest.live.config.mts from the FLOWCORE_LIVE_* environment variables.
+const { environment, apiKey, resource, recordId } = inject('flowcoreLive');
 const enabled = Boolean(environment && apiKey);
 
 /** A context whose HTTP helper behaves like n8n's: real request, credential header added. */
@@ -60,7 +58,7 @@ function liveContext(params: IDataObject): IExecuteFunctions {
 	} as unknown as IExecuteFunctions;
 }
 
-describe.skipIf(!enabled)(`FlowCore live (${environment ?? 'disabled'}, read-only)`, () => {
+describe.skipIf(!enabled)(`FlowCore live (${environment || 'disabled'}, read-only)`, () => {
 	it('resolves the fixed base URL of the selected environment', () => {
 		expect(getBaseUrl(environment)).toMatch(/^https:\/\/app(-staging)?\.flowcore\.cloud$/);
 	});

@@ -6,13 +6,6 @@ import {
 	getBaseUrl,
 } from '../nodes/FlowCore/environments';
 
-/** Evaluates the body of the `={{ … }}` expression the way n8n would for plain JS. */
-function evaluateBaseUrlExpression(environment: unknown): unknown {
-	const match = /^=\{\{(.*)\}\}$/s.exec(BASE_URL_EXPRESSION);
-	if (!match) throw new Error('Not an n8n expression');
-	return new Function('$credentials', `return (${match[1]});`)({ environment });
-}
-
 describe('environment mapping', () => {
 	it('maps each environment to its fixed, verified base URL', () => {
 		expect(FLOWCORE_BASE_URLS).toEqual({
@@ -30,9 +23,10 @@ describe('environment mapping', () => {
 	});
 
 	it('uses the same mapping in the credential test expression', () => {
-		expect(evaluateBaseUrlExpression('production')).toBe(FLOWCORE_BASE_URLS.production);
-		expect(evaluateBaseUrlExpression('staging')).toBe(FLOWCORE_BASE_URLS.staging);
-		expect(evaluateBaseUrlExpression('other')).toBeUndefined();
+		expect(BASE_URL_EXPRESSION).toBe(
+			'={{ $credentials.environment === "production" ? "https://app.flowcore.cloud" : ' +
+				'$credentials.environment === "staging" ? "https://app-staging.flowcore.cloud" : undefined }}',
+		);
 	});
 });
 

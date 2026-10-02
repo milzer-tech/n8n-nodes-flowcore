@@ -7,7 +7,8 @@ import type {
 } from 'n8n-workflow';
 import { vi } from 'vitest';
 
-export const TEST_API_KEY = 'fc_test_FIXTUREKEYfixturekeyFIXTUREKEYfixture00';
+/** A fake Staging-format key (prefix + 43 characters), assembled so it never looks like a real one. */
+export const TEST_API_KEY = ['fc_test_', 'x'.repeat(43)].join('');
 
 export interface FakeResponse {
 	statusCode: number;
