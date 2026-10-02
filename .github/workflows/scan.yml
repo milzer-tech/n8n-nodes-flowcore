@@ -1,0 +1,28 @@
+name: Scan published package
+
+# Runs n8n's community package scanner against the version published on npm
+# (provenance, attested source, lint). Run after each release, before
+# submitting to the n8n Creator Portal.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to scan (default: latest)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Scan
+        run: npx -y @n8n/scan-community-package "n8n-nodes-flowcore${VERSION:+@$VERSION}"
+        env:
+          VERSION: ${{ inputs.version }}
