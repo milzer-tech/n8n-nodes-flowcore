@@ -417,7 +417,7 @@ const actionProperties: INodeProperties[] = [
 	},
 	{
 		displayName:
-			'Execute Action changes data in FlowCore. Do not enable "Retry On Fail" for this operation.',
+			'Execute Action changes data in FlowCore. Do not enable "Retry On Fail" for this operation. When an AI agent uses this node as a tool, require human approval for the tool.',
 		name: 'executeActionNotice',
 		type: 'notice',
 		default: '',

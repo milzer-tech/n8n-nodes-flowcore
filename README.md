@@ -140,7 +140,8 @@ the node. When the record ID is an expression, set the action ID with an express
 `cancel`). **Action Inputs (JSON)** is a flat object such as
 `{"cancellationDate": "2026-10-01"}`. Run Preview Action to see which inputs an action accepts.
 
-Execute Action is never retried by the node. Do not enable **Retry On Fail** for it.
+Execute Action is never retried by the node. Do not enable **Retry On Fail** for it. If an AI
+agent uses the node as a tool, require human approval for that tool.
 
 ## Webhooks
 
@@ -252,8 +253,9 @@ manually on Staging with test data.
   between pages. Each request returns at most 300 records.
 - Action options can only be loaded for a fixed record ID.
 - Actions that need an interactive FlowCore dialog (`view` mode) cannot run from n8n.
-- The node is not exposed as an AI agent tool, because Execute Action changes business data
-  without FlowCore's MCP confirmation step.
+- The node can be used as an AI agent tool. Execute Action then runs without the confirmation
+  step of FlowCore's MCP interface. Give agents the node only with n8n's human approval for
+  tools enabled, or limit the tool to read operations.
 - No FlowCore Trigger node (see [Webhooks](#webhooks)).
 - FlowCore has no inbound rate limiting today. Keep batch sizes and concurrency moderate anyway.
 

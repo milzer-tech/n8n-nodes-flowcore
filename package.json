@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-flowcore",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "n8n community node for FlowCore, the travel ERP platform: read records and run FlowCore record actions.",
 	"license": "MIT",
 	"homepage": "https://github.com/milzer-tech/n8n-nodes-flowcore#readme",

@@ -16,10 +16,6 @@ import { CREDENTIAL_NAME, flowCoreRequest, isObject } from './transport';
 // Programmatic rather than declarative: executing a record action needs dependent requests
 // (list actions → preview → execute with the preview's fingerprint), Get Many pages through
 // skip/limit, and every request shares one error mapping that keeps secrets out of messages.
-//
-// Deliberately not `usableAsTool`: Execute Action changes business data, and FlowCore's own agent
-// interface (MCP) adds an explicit confirmation step this node does not have.
-// eslint-disable-next-line @n8n/community-nodes/node-usable-as-tool
 export class FlowCore implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'FlowCore',
@@ -33,6 +29,10 @@ export class FlowCore implements INodeType {
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: CREDENTIAL_NAME, required: true }],
+		// Usable by AI agents. Execute Action changes business data without the confirmation
+		// step of FlowCore's own MCP interface; the README asks workflow builders to require
+		// human approval for agent tools that execute actions.
+		usableAsTool: true,
 		properties: nodeProperties,
 	};
 

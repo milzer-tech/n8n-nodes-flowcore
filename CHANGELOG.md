@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.1
+
+- The node can be used as an AI agent tool (`usableAsTool`), as required for n8n verification.
+  Require human approval when an agent may execute actions.
+
+## 0.1.0
 
 - FlowCore API credential with Production/Staging environment and API key (x-api-key), tested
   via `GET /me/api-key`.
